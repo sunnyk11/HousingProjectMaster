@@ -1,0 +1,77 @@
+﻿@model HousingProject.Models.BuyerDetailViewModel
+@{
+    ViewBag.Title = "TestValidation";
+    Layout = "~/Views/Shared/_UBoldAdminLayout.cshtml";
+}
+
+<form class="dropzone" action="@Url.Action("UploadFile","Admin")" style="border:2px dashed #ced4da" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
+      data-upload-preview-template="#uploadPreviewTemplate" enctype="multipart/form-data">
+    <div class="fallback">
+        <input name="file" id="fileUpload" type="file" multiple />
+    </div>
+
+    <div class="dz-message needsclick">
+        <i class="h1 text-muted dripicons-cloud-upload"></i>
+        <h3>Drop files here or click to upload.</h3>
+        <span class="text-muted font-13">
+            (This is just a demo dropzone. Selected files are
+            <strong>not</strong> actually uploaded.)
+        </span>
+    </div>
+
+
+    <!-- Preview -->
+    <div class="dropzone-previews mt-3" id="file-previews"></div>
+    <div class="d-none" id="uploadPreviewTemplate">
+        <div class="card mt-1 mb-0 shadow-none border">
+            <div class="p-2">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+                    </div>
+                    <div class="col pl-0">
+                        <a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name></a>
+                        <p class="mb-0" data-dz-size></p>
+                    </div>
+                    <div class="col-auto">
+                        <!-- Button -->
+                        <a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
+                            <i class="dripicons-cross"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-right">
+        <button type="submit" id="btnSave" class="btn btn-success waves-effect waves-light">Upload</button>
+    </div>
+</form>
+@*<form id="frmLeadDetais" class="parsley-examples">
+
+    <input type="file" id="fileUpload" multiple />
+    <input type="button" value="Submit" id="btnSave" />
+</form>*@
+@section Scripts{
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/dropzone/min/dropzone.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/dropify/js/dropify.min.js"></script>
+
+    <!-- Init js-->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/js/pages/form-fileuploads.init.js"></script>
+  
+    @*<script>
+        Dropzone.autoDiscover = false;
+
+        var myDropZone = new Dropzone(".dropzone", {
+            autoProcessQueue: false,
+            parallelUploads: 10
+        });
+
+        $("#btnSave").click(function () {
+            myDropZone.processQueue();
+        })
+       
+    </script>*@
+
+}

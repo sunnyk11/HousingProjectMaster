@@ -1,0 +1,166 @@
+﻿@model IEnumerable<HousingProject.Data.Opportunity>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_UBoldAdminLayout.cshtml";
+    var completeApplication = Model.Where(x => x.OpportunityStatus == Convert.ToInt32(HousingProject.Enum.OpportunityStatus.CompleteApplication)).Count();
+    var uploadDocuments = Model.Where(x => x.OpportunityStatus == Convert.ToInt32(HousingProject.Enum.OpportunityStatus.UploadDocuments)).Count();
+    var autologinBank = Model.Where(x => x.OpportunityStatus == Convert.ToInt32(HousingProject.Enum.OpportunityStatus.AutoLoginBank)).Count();
+//    var checkStatus = Model.Where(x => x.OpportunityStatus == Convert.ToInt32(HousingProject.Enum.OpportunityStatus.AutoLoginBank)).Count();
+    var disbursement = Model.Where(x => x.OpportunityStatus == Convert.ToInt32(HousingProject.Enum.OpportunityStatus.Disbursement)).Count();
+}
+
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                    <li class="breadcrumb-item active">Opportunities</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Opportunities</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-8 order-xl-1 order-2">
+        <div class="card mb-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label for="inputPassword2" class="sr-only">Search</label>
+                                <input type="search" class="form-control" id="inputPassword2" placeholder="Search...">
+                            </div>
+                            <div class="form-group mx-sm-3">
+                                <label for="status-select" class="mr-2">Sort By</label>
+                                <select class="custom-select" id="status-select">
+                                    <option selected="">All</option>
+                                    <option value="1">Hot</option>
+                                    <option value="2">Cold</option>
+                                    <option value="3">In Progress</option>
+                                    <option value="4">Lost</option>
+                                    <option value="5">Won</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-lg-right mt-3 mt-lg-0">
+                            <button type="button" class="btn btn-success waves-effect waves-light mr-1"><i class="mdi mdi-cog"></i></button>
+                            @*<button type="button" class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#custom-modal"><i class="mdi mdi-plus-circle mr-1"></i> Add New</button>*@
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+        @*<div class="row" style="display:none" id="divMessage">
+            <div class="col-md-12">
+                <div class="alert alert-success" role="alert">
+                    <i class="mdi mdi-check-all mr-2"></i> Congratulations!! Customer has been added <strong>successfully</strong>!
+                </div>
+            </div>
+        </div>*@
+        @foreach (var item in Model)
+        {
+            <div class="card-box mb-2">
+                <div class="row align-items-center">
+                    <div class="col-sm-4">
+                        <div class="media">
+                            <img class="d-flex align-self-center mr-3 rounded-circle" src="~/UBold_v4.1.0/Admin/dist/assets/images/companies/amazon.png" alt="Generic placeholder image" height="64">
+                            <div class="media-body">
+                                <h4 class="mt-0 mb-2 font-16"><a href="@Url.Action("ProceedLead","Details",new {id = item.BuyerId, oppoId = item.Id, type="Opportunity" })">@item.OpportunityName</a></h4>
+                                <p class="mb-1"><b>Buyer:</b> @item.Buyer.BuyerName</p>
+                                <p class="mb-0"><b>Category:</b> Ecommerce</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="mb-1 mt-3 mt-sm-0"><i class="mdi mdi-email mr-1"></i> @item.Buyer.Email</p>
+                        <p class="mb-0"><i class="mdi mdi-phone-classic mr-1"></i> @item.Buyer.MobileNo</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="text-center mt-3 mt-sm-0">
+                            @if (item.OpportunityStatus == 1)
+                            {
+                                <div class="badge font-14 bg-soft-info text-info p-1">Complete Application</div>
+                            }
+                            else if (item.OpportunityStatus == 2)
+                            {
+                                <div class="badge font-14 bg-soft-primary text-primary p-1">Upload Documents</div>
+                            }
+                            else if (item.OpportunityStatus == 3)
+                            {
+                                <div class="badge font-14 bg-soft-warning text-warning p-1">Auto Login Bank</div>
+                            }
+                            else if (item.OpportunityStatus == 5)
+                            {
+                                <div class="badge font-14 bg-soft-success text-success p-1">Disbursement</div>
+                            }
+                            else
+                            {
+                                <div class="badge font-14 bg-soft-danger text-danger p-1">Rejected/Approved</div>
+                            }
+                        </div>
+                    </div>
+                </div> <!-- end row -->
+            </div>
+        }
+
+
+        <div class="text-center my-4">
+            <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading mr-1"></i> Load more </a>
+        </div>
+
+    </div> <!-- end col -->
+
+    <div class="col-xl-4 order-xl-2 order-1">
+        <div class="card-box" dir="ltr">
+            <h4 class="header-title mb-3">Status Charts</h4>
+
+            <div class="text-center">
+                <div id="status-chart"></div>
+
+                <p class="text-muted font-15 font-family-secondary mb-0 mt-3">
+                    <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-success"></i> Disbursed</span>
+                    <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-info"></i> Complete Application</span>
+                    <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> Upload Documents</span>
+                    <span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-warning"></i> Auto Login Bank</span>
+                    @*<span class="mx-2"><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Lost</span>*@
+                </p>
+            </div>
+
+        </div> <!-- end card-box-->
+    </div> <!-- end col -->
+</div>
+
+@section Scripts{
+    <!-- Sparkline chart js -->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Opportunities init js -->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/js/pages/crm-opportunities.init.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Sweet alert init js-->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/js/pages/sweet-alerts.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            var t = ["#4fc6e1", "#1abc9c", "#f7b84b", "#6658dd"],
+                c = $("#status-chart").data("colors"); c && (t = c.split(","));
+            function e() {
+                $("#status-chart").sparkline([@completeApplication, @disbursement, @autologinBank, @uploadDocuments], {
+                    type: "pie", width: "220", height: "220", sliceColors: t
+                })
+            }
+            var i; e(), $(window).resize(function (t) {
+                clearTimeout(i), i = setTimeout(function () { e() }, 300)
+            })
+        });
+    </script>
+}

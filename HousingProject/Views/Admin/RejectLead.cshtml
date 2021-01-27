@@ -1,0 +1,13 @@
+﻿@model HousingProject.Data.RejectedLead
+@{
+    ViewBag.Title = "RejectLead";
+    Layout = null;
+}
+
+@Html.HiddenFor(model => model.BuyerId)
+<div id="partialRejectPopup">
+    <div class="form-group">
+        <label for="name"><span style="color:red">*</span>Reason</label>
+        @Html.TextAreaFor(model => model.Reason, new { @class = "form-control", @required = "required", placeholder = "Enter Reason",rows = 4 })
+    </div>
+</div>

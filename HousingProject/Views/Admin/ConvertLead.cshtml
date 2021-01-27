@@ -1,0 +1,85 @@
+﻿@model HousingProject.Models.ConvertLeadViewModel
+@{ 
+    Layout = null;
+}
+
+<style>
+    .display{
+        display:inline;
+    }
+</style>
+
+<div id="partialConvertPopup">
+    @Html.HiddenFor(model => model.BuyerId)
+    <div class="row">
+        <div class="col-md-5">
+            <i class="mdi mdi-arrow-down"></i>
+            <h5 class="display">Account</h5>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="radio radio-primary mb-2">
+                        <input type="radio" name="radio3" id="radioAccount" value="option3" checked>
+                        <label for="radio13">
+                            Create New
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name"><span style="color:darkred">*</span>Account Name</label>
+                        @Html.TextBoxFor(model => model.AccountName, new { @class = "form-control", @required = "required", placeholder = "Account Name" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<img src="~/Content/Images/achievement.png" />*@
+    <div class="row">
+        <div class="col-md-5">
+            <i class="mdi mdi-arrow-down"></i>
+            <h5 class="display">Contact</h5>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="radio radio-primary mb-2">
+                        <input type="radio" name="radio4" id="radioContact" value="option3" checked>
+                        <label for="radio13">
+                            Create New
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.ContactName, new { @class = "form-control", @required = "required", placeholder = "Contact Name" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <i class="mdi mdi-arrow-down"></i>
+            <h5 class="display">Opportunity</h5>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="radio radio-primary mb-2">
+                        <input type="radio" name="radio5" id="radioOpportunity" value="option3" checked>
+                        <label for="radio13">
+                            Create New
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.OpportunityName, new { @class = "form-control", @required = "required", placeholder = "Opportunity Name" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

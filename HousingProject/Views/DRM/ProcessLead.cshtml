@@ -1,0 +1,672 @@
+﻿@model HousingProject.Models.ManagerPropertyListerViewModel
+@{
+    ViewBag.Title = "ProcessLead";
+    Layout = "~/Views/Shared/_UBoldAdminLayout.cshtml";
+}
+
+
+<style>
+     .dropzone {
+         border: 2px dashed #ced4da;
+     }
+
+     .tabCheck {
+         background-color: #31bf31 !important;
+         color: white !important;
+     }
+
+     .currentTab {
+         background-color: transparent !important;
+         color: blue !important;
+         border: 2px solid blue;
+     }
+
+     .UploadedFiles {
+         text-overflow: ellipsis;
+         width: 80%;
+         overflow: hidden;
+         display: inline-block;
+     }
+
+     .UploadedBoxShadow {
+         border: 1px solid;
+         padding: 10px;
+         box-shadow: 3px 5px #888888;
+         border-radius: 10px;
+         margin: 10px 10px;
+     }
+
+     .Divoverflow {
+         width: 10em;
+         /**
+    * Required properties to achieve text-overflow
+    */
+         white-space: nowrap;
+         overflow: hidden;
+     }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
+                    <li class="breadcrumb-item active">Lister Details</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Property Listers</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-8 order-xl-1 order-2">
+        <div class="card mb-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        @Model.PropertyLister.Name
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-lg-right mt-3 mt-lg-0">
+                            <button type="button" class="btn btn-primary waves-effect waves-light mr-1"><i class="mdi mdi-cog"></i></button>
+                        </div>
+                    </div><!-- end col-->
+                </div> <!-- end row -->
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-8 order-xl-1 order-2">
+        <div class="card mb-2">
+            <div class="card-body" id="statusTab">
+
+                <button type="button" id="btn-status" class="btn btn-outline-primary waves-effect waves-light mr-1" onclick="setCurrentStatus(@Model.PropertyLister.ListerId, false)">Mark As Complete</button>
+                <hr />
+                <ul class="nav nav-pills navtab-bg nav-justified">
+                    <li class="nav-item">
+                        <a href="#new" onclick="setStatus(1)" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            New
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contacted" data-toggle="tab" onclick="setStatus(2)" aria-expanded="true" class="nav-link">
+                            Contacted
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#working" data-toggle="tab" onclick="setStatus(3)" aria-expanded="false" class="nav-link">
+                            Working
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#unqualified" data-toggle="tab" onclick="setStatus(4)" aria-expanded="false" class="nav-link">
+                            Unquailified
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#converted" data-toggle="tab" onclick="setStatus(5)" aria-expanded="false" class="nav-link">
+                            Converted
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card-box">
+
+            <ul class="nav nav-tabs nav-bordered">
+                <li class="nav-item">
+                    <a href="#details" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                        Details
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#files" data-toggle="tab" aria-expanded="false" class="nav-link">
+                        Files
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#notes" data-toggle="tab" aria-expanded="false" class="nav-link">
+                        Notes
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane show active" id="details">
+                    <form id="frmLeadDetails" action="#">
+                        @Html.HiddenFor(model => model.PropertyLister.ListerId)
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h4 class="header-title mb-4">Personal Information</h4>
+                                <hr />
+                                <div class="form-group">
+                                    <label for="name">User Name</label>
+                                    @Html.TextBoxFor(model => model.PropertyLister.Name, new { @class = "form-control", required = "required", placeholder = "Enter user name" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email</label>
+                                    @Html.TextBoxFor(model => model.PropertyLister.Email, new { @class = "form-control", type = "email", required = "required", placeholder = "Enter emaill address" })
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="position">Phone</label>
+                                    @Html.TextBoxFor(model => model.PropertyLister.MobileNo, new { @class = "form-control", type = "number", required = "required", placeholder = "Enter phone number" })
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="header-title mb-4">Other Information</h4>
+                                <hr />
+                                <div class="form-group">
+                                    <label for="name">Date of Birth</label>
+                                    @Html.TextBoxFor(model => model.PropertyLister.DoB, new { @class = "form-control", placeholder = "Select Date of birth", type = "date", })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Father First Name</label>
+                                    @Html.TextBoxFor(model => model.PropertyLister.FatherFirstName, new { @class = "form-control", placeholder = "Enter Father first name" })
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="position">Father Middle Name</label>
+                                    @Html.TextBoxFor(model => model.PropertyLister.FatherLastName, new { @class = "form-control", placeholder = "Enter Father last name" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="button" class="btn btn-success waves-effect waves-light" id="btnSaveDetails">Save Details</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="files">
+                    <form action="#" class="dropzone" style="border:2px dashed #ced4da" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews"
+                          data-upload-preview-template="#uploadPreviewTemplate">
+
+                        <div class="dz-message needsclick">
+                            <i class="h1 text-muted dripicons-cloud-upload"></i>
+                            <h3>Click on Choose Files to upload.</h3>
+                            <span class="text-muted font-13">
+                                (Selected files are
+                                <strong>not</strong> actually uploaded.)
+                            </span>
+                            <input name="file" id="FileUpload" type="file" multiple />
+                        </div>
+
+
+                        <!-- Preview -->
+                        <div class="row" id="divUploadedFiles">
+                            @if (Model.DocumentUpload != null)
+                            {
+                                foreach (var item in Model.DocumentUpload)
+                                {
+                                    <div class="col-md-3 Divoverflow UploadedBoxShadow" id="@item.FileName.Split('/')[0]">
+                                        @*<i class="h3 text-muted dripicons-document"></i>*@
+                                        <i class="h3 text-muted dripicons-document-remove"></i>
+                                        <a class="UploadedFiles" href="~/Content/Files/@item.FileName" target="_blank">@item.FileName.Split('/')[1]</a>
+                                        <i class="dripicons-cross" onclick="DeleteFile('@item.FileName')"></i>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                        <div class="text-right">
+                            <button type="button" id="btnFileUpload" class="btn btn-success waves-effect waves-light">Upload</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="tab-pane" id="notes">
+                    <div>
+                        @*<a class="btn btn-success waves-effect waves-light popup" onclick="PopupForm('@Url.Action("SaveNote","Admin")')"><i class="mdi mdi-plus"></i>Add Note</a>*@
+                        <button type="submit" class="btn btn-success waves-effect waves-light" data-toggle="modal" data-target="#custom-modal" data-backdrop="static" data-keyboard="false"><i class="mdi mdi-plus"></i>Add Note</button>
+                    </div>
+                    <div style="margin-top:20px">
+                        <table id="tbl-notes" class="table dt-responsive nowrap w-100 table-bordered">
+                            <thead>
+                                <tr>
+                                    @*<th>S.No</th>*@
+                                    <th>Subject</th>
+                                    <th>Description</th>
+                                    <th>Created On</th>
+                                    <th>Modified On</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end card-box-->
+    </div> <!-- end col -->
+</div>
+
+<div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h4 class="modal-title" id="myCenterModalLabel">Add New Note</h4>
+            </div>
+            <div class="modal-body p-4">
+                @{
+                    @Html.Partial("_PartialNote", new HousingProject.Data.ListerNotes());
+                }
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="leadCovertModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("ConvertLead","DRM",new {BuyerId=Model.PropertyLister.ListerId })">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light" style="background-color: #3e567b !important;">
+                <h4 class="modal-title" id="myCenterModalLabel" style="margin-left:auto;margin-right:auto;color:white">Convert Lead</h4>
+            </div>
+            <div class="modal-body p-4" id="CovertLeadBody">
+            </div>
+            <div class="modal-footer" style="border-top:2px solid #ece2e2">
+                <button type="button" id="btnSaveConvertedLead" class="btn btn-primary waves-effect waves-light">Convert</button>
+                <button type="button" id="btnCancelConvert" class="btn btn-light waves-effect waves-light">Cancel</button>
+                <a type="button" id="btnGotoLeads" href="@Url.Action("Index","DRM")" class="btn btn-primary waves-effect waves-light" hidden>Go to Leads</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="leadRejectModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("RejectLead","DRM",new {BuyerId=Model.PropertyLister.ListerId })">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light" style="background-color: #3e567b !important;">
+                <h4 class="modal-title" id="myCenterModalLabel" style="margin-left:auto;margin-right:auto;color:white">Reject Lead</h4>
+            </div>
+            <div class="modal-body p-4" id="RejectLeadBody">
+            </div>
+            <div class="modal-footer" style="border-top:2px solid #ece2e2">
+                <button type="button" id="btnSaveRejectedLead" class="btn btn-primary waves-effect waves-light">Reject</button>
+                <button type="button" id="btnCancelReject" class="btn btn-light waves-effect waves-light">Cancel</button>
+                <a type="button" id="btnGotoLeadsAfterReject" href="@Url.Action("Leads","DRM")" class="btn btn-primary waves-effect waves-light" hidden>Go to Leads</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<!--File Upload Css-->
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+
+<!--Data Table Third Party CSS-->
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/toastr.min.css" rel="stylesheet" type="text/css" />
+@*<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />*@
+
+
+@section Scripts{
+    <!-- Plugins js -->
+    <script src="~/Scripts/toastr.min.js"></script>
+
+    @*<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>*@
+
+    <!-- Init js-->
+    @*<script src="~/UBold_v4.1.0/Admin/dist/assets/js/pages/form-fileuploads.init.js"></script>*@
+    <!-- third party js -->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <!-- third party js ends -->
+    <!-- Datatables init -->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/js/pages/datatables.init.js"></script>
+
+    <script>
+
+        var currentStatus = @Model.PropertyLister.ListerStatus;
+        var Updatedstatus = currentStatus;
+        (function () {
+            tabCheck();
+        })();
+
+        function tabCheck() {
+            debugger
+            var items =  document.getElementById("statusTab").getElementsByTagName("li");
+            var i = items.length - 1;
+
+            while (i >= 0) {
+                items[i].getElementsByTagName("a")[0].classList.remove("active", "tabCheck", "currentTab");
+                i--;
+            }
+            items[Updatedstatus - 1].getElementsByTagName("a")[0].classList.add("active");
+            i = 0;
+            while (i < currentStatus - 1) {
+                items[i].getElementsByTagName("a")[0].classList.add("tabCheck");
+                i++;
+            }
+            if (currentStatus != Updatedstatus) {
+                items[currentStatus - 1].getElementsByTagName("a")[0].classList.add("currentTab");
+                var buttonStatus = document.getElementById("btn-status");
+                buttonStatus.innerText = "Mark Current Status";
+                buttonStatus.setAttribute("onclick","setCurrentStatus(@Model.PropertyLister.ListerId, true)");
+            }
+            else {
+                items[currentStatus - 1].getElementsByTagName("a")[0].classList.remove("currentTab");
+                var buttonStatus = document.getElementById("btn-status");
+                if (currentStatus == 5) {
+                    buttonStatus.innerText = "Select Converted Status";
+                    buttonStatus.setAttribute("onclick", "ConvertLead(@Model.PropertyLister.ListerId)");
+                }
+                else if (currentStatus == 4) {
+                    buttonStatus.innerText = "Reject Lead";
+                    buttonStatus.setAttribute("onclick", "RejectLead(@Model.PropertyLister.ListerId)");
+                }
+                else {
+                    buttonStatus.innerText = "Mark As Complete";
+                    buttonStatus.setAttribute("onclick", "setCurrentStatus(@Model.PropertyLister.ListerId, false)");
+                }
+            }
+            items[Updatedstatus - 1].getElementsByTagName("a")[0].classList.remove("tabCheck");
+        }
+
+
+        var setCurrentStatus = (ListerId, isCurrent) => {
+            var dataStatus = isCurrent == true ? Updatedstatus : Updatedstatus + 1;
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SetStatus", "DRM")",
+                data: { ListerId: ListerId, status: dataStatus },
+                success: function (response) {
+                    if (response.status == "OK")
+                    {
+                        currentStatus = response.currentStatus;
+                        Updatedstatus = currentStatus;
+                        tabCheck();
+                        toastr.success('Status has been updated');
+                    }
+                }
+            });
+        }
+
+        function setStatus(changeStatus) {
+            Updatedstatus = changeStatus;
+            tabCheck();
+
+        }
+
+        function ConvertLead(BuyerId) {
+            var url = $('#leadCovertModal').data('url');
+
+            $.get(url, function (data) {
+                $('#CovertLeadBody').html(data);
+                $('#leadCovertModal').modal('show');
+            });
+        }
+
+        function RejectLead(BuyerId) {
+            var url = $('#leadRejectModal').data('url');
+
+            $.get(url, function (data) {
+                $('#RejectLeadBody').html(data);
+                $('#leadRejectModal').modal('show');
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#btnCancelConvert").click(function () {
+            $('#leadCovertModal').modal('hide');
+        });
+        $("#btnCancelReject").click(function () {
+            $('#leadRejectModal').modal('hide');
+        });
+
+
+        $("#btnSaveConvertedLead").click(function () {
+            $.ajax({
+                    url: "@Url.Action("SaveConvertedLead", "DRM")",
+                    type: 'POST',
+                    cache: false,
+                    data: {
+                        BuyerId: @Model.PropertyLister.ListerId,
+                        AccountName: $("#AccountName").val(),
+                        ContactName: $("#ContactName").val(),
+                        OpportunityName: $("#OpportunityName").val(),
+                    },
+                    success: function (response) {
+                    debugger
+                        if (response.status == "OK") {
+                            $('#partialConvertPopup').html("");
+                            $('#partialConvertPopup').html("<div class='row'><div class='col-md-12'><center><img src='/Content/Images/achive1.png' height='100' width='100' id='imgLeadConvert' /></center></div><div class='col-md-12'><center><h4>Your Lead has been converted successfully ! ! !</h4></center></div></div>");
+                            $('#btnGotoLeads').removeAttr('hidden');
+                            $('#imgLeadConvert').removeAttr('hidden');
+                            $('#btnSaveConvertedLead').attr('hidden', 'hidden');
+                            $('#btnCancelConvert').attr('hidden','hidden');
+                        }
+                },
+                error: function (response) {
+                    alert(response);
+                }
+                })
+        });
+
+        $("#btnSaveRejectedLead").click(function () {
+            $.ajax({
+                    url: "@Url.Action("SaveRejectedLead", "Admin")",
+                    type: 'POST',
+                    cache: false,
+                    data: {
+                        BuyerId: @Model.PropertyLister.ListerId,
+                        Reason: $("#Reason").val(),
+                    },
+                    success: function (response) {
+                    debugger
+                        if (response.status == "OK") {
+                            $('#partialRejectPopup').html("");
+                            $('#partialRejectPopup').html("<div class='row'><div class='col-md-12'><center><img src='/Content/Images/reject.jpg' id='imgLeadReject' /></center></div><div class='col-md-12'><center><h4>Following Lead has been rejected !!</h4></center></div></div>");
+                            $('#btnGotoLeadsAfterReject').removeAttr('hidden');
+                            $('#imgLeadReject').removeAttr('hidden');
+                            $('#btnSaveRejectedLead').attr('hidden', 'hidden');
+                            $('#btnCancelReject').attr('hidden','hidden');
+                        }
+                },
+                error: function (response) {
+                    alert(response);
+                }
+                })
+        });
+
+        $("#btnSaveNote").click(function () {
+             $.ajax({
+                    url: "@Url.Action("SaveNoteView", "DRM")",
+                    type: 'POST',
+                    cache: false,
+                    data: {
+                        Id: $("#Id").val(),
+                        ListerId: @Model.PropertyLister.ListerId,
+                        Subject: $("#Subject").val(),
+                        Description: $("#Description").val(),
+                    },
+                    success: function (response) {
+                        if (response.status == true) {
+                            debugger
+                            GetNotesTable.ajax.reload();
+                            $("#Subject").val('');
+                            $("#Id").val('');
+                            $("#Description").val('');
+                            toastr.success('Note Details Have been Saved');
+                            $('#custom-modal').modal('hide');
+
+                        }
+                    }
+                })
+        })
+
+        function generateGuid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        $("#btnFileUpload").click(function () {
+            var formData = new FormData();
+            var totalFiles = document.getElementById("FileUpload").files.length;
+            for (var i = 0; i < totalFiles; i++)
+            {
+                var file = document.getElementById("FileUpload").files[i];
+                var Guid = "File-"+ generateGuid();
+                formData.append("FileUpload" + i, file);
+                formData.append("Guid" + i, Guid);
+            }
+            formData.append("ListerId",@Model.PropertyLister.ListerId);
+                $.ajax({
+                    url: "@Url.Action("UploadLeadFiles", "DRM")",
+                    type: 'POSt',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == "OK") {
+                            debugger
+
+                            var uploadedFiles = document.getElementById("divUploadedFiles");
+
+                            for (var i = 0; i < totalFiles; i++)
+                            {
+                                var file = formData.get("FileUpload" + i);
+                                var guid = formData.get("Guid" + i);
+                                var fileName = guid + "/" + file.name;
+                                var href = "/Content/Files/" + guid + "/" + file.name;
+
+                                var div = document.createElement("div");
+                                div.className = "col-md-3 Divoverflow UploadedBoxShadow";
+                                div.id = guid;
+                                var icon = document.createElement("i");
+                                icon.className = "h3 text-muted dripicons-document-remove";
+                                div.appendChild(icon);
+
+                                var anchor = document.createElement("a");
+                                anchor.target = "_blank";
+                                anchor.className = "UploadedFiles";
+
+                                anchor.href = href;
+                                var content = document.createTextNode(file.name);
+                                anchor.appendChild(content);
+                                div.appendChild(anchor);
+                                var close = document.createElement("i");
+                                close.className = "dripicons-cross";
+                                close.setAttribute("onclick", "DeleteFile('" + fileName + "')");
+
+                                div.appendChild(close);
+                                uploadedFiles.appendChild(div);
+                            }
+
+                            toastr.success('Files upload successfully');
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Some error occured while uploading files');
+
+                    }
+                });
+
+        });
+
+        function DeleteFile(fileName) {
+            var $ctrl = $(this);
+            if (confirm('Do you really want to delete this file?')) {
+                debugger
+                $.ajax({
+                    url: '@Url.Action("DeleteFile")',
+                    type: 'POST',
+                    data: { filename: fileName }
+                }).done(function (data) {
+                    debugger
+                    if (data.Result == "OK") {
+                        var Divid = "#" + fileName.split('/')[0];
+                        $(Divid).remove();
+                    }
+                })
+            }
+        }
+
+        $("#btnSaveDetails").click(function () {
+                //var data = $("#frmLeadDetails").serialize();
+                $.ajax({
+                    url: "@Url.Action("SaveDetails","DRM")",
+                    type: 'POST',
+                    cache: false,
+                    data: {
+                        ListerId: $("#PropertyLister_ListerId").val(),
+                        Name: $("#PropertyLister_Name").val(),
+                        Email: $("#PropertyLister_Email").val(),
+                        MobileNo: $("#PropertyLister_MobileNo").val(),
+                        DoB: $("#PropertyLister_DoB").val(),
+                        FatherFirstName: $("#PropertyLister_FatherFirstName").val(),
+                        FatherLastName: $("#PropertyLister_FatherLastName").val(),
+                    },
+                    success: function (response) {
+                        if (response.status == "OK") {
+                            toastr.success('Details Have been Saved');
+                        }
+
+                    }
+                })
+        });
+
+        var GetNotesTable = $('#tbl-notes').DataTable({
+
+                "ajax": {
+                    "url": "@Url.Action("GetNotes", "DRM",new {listerId= Model.PropertyLister.ListerId })",
+                    "type": "get",
+                    "datatype": "json"
+                },
+                "columns": [
+                    //{ "data": "S.No", "autoWidth": true },
+                    { "data": "Subject", "autoWidth": true },
+                    { "data": "Description", "autoWidth": true },
+                    {
+                        "data": "CreatedOn", "autoWidth": true,
+                        render: function (d) {
+                            return moment(d).format("DD/MM/YYYY HH:mm:ss");
+                        }
+                    },
+                    {
+                        "data": "UpdatedOn", "autoWidth": true,
+                        render: function (d) {
+                            return moment(d).format("DD/MM/YYYY HH:mm:ss");
+                        }
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No data found, Please click on <b>Add New Note</b>"
+                }
+            });
+
+    </script>
+}

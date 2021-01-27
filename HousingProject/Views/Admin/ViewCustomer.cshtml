@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "ViewCustomer";
+    Layout = "~/Views/Shared/_UBoldAdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">UI</a></li>
+                    <li class="breadcrumb-item active">Tabs & Accordions</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Customer Summary</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card-box">
+            <h4 class="header-title mb-4">Tabs Justified</h4>
+
+            <ul class="nav nav-pills navtab-bg nav-justified">
+                <li class="nav-item">
+                    <a href="#contact" data-toggle="tab" aria-expanded="false" class="nav-link">
+                        Contact
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#opportunity" data-toggle="tab" aria-expanded="true" class="nav-link active">
+                        Opportunity
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#files" data-toggle="tab" aria-expanded="false" class="nav-link">
+                        Files
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="contact">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <h5 class="mt-0">Inline edit with Button</h5>
+                                    <p class="sub-header">Inline edit like a spreadsheet, toolbar column with edit button only and without focus on first input.</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-centered mb-0" id="btn-editable">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Relationship</th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Tiger Nixon</td>
+                                                    <td>tiger@gmail.com</td>
+                                                    <td>8130946119</td>
+                                                    <td>Brother</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Garrett Winters</td>
+                                                    <td>Garrett@gmal.com</td>
+                                                    <td>8882444813</td>
+                                                    <td>Father</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div> <!-- end .table-responsive-->
+                                </div> <!-- end card-body -->
+                            </div> <!-- end card -->
+                        </div> <!-- end col -->
+                    </div>
+                </div>
+                <div class="tab-pane show active" id="opportunity">
+                    <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                    <p class="mb-0">Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+                </div>
+                <div class="tab-pane" id="files">
+                    <p>Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+                    <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                </div>
+            </div>
+        </div> <!-- end card-box-->
+    </div>
+</div>
+
+
+@section Scripts{
+    <!-- Table Editable plugin-->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/libs/jquery-tabledit/jquery.tabledit.min.js"></script>
+
+    <!-- Table editable init-->
+    <script src="~/UBold_v4.1.0/Admin/dist/assets/js/pages/tabledit.init.js"></script>
+
+    <script type="text/javascript">
+        $("#btn-editable").Tabledit({
+            buttons: {
+                edit: {
+                    class: "btn btn-success",
+                    html: '<span class="mdi mdi-pencil"></span>',
+                    action: "edit"
+                }
+            },
+            inputClass: "form-control form-control-sm",
+            deleteButton: !1,
+            saveButton: !1,
+            autoFocus: !1,
+            columns: { identifier: [0, "id"], editable: [[1, "col1"], [2, "col2"], [3, "col3"], [4, "col4"], [6, "col6"]] }
+        
+        })
+    </script>
+}
+
